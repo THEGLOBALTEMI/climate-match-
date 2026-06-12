@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-thumb { background: #4ca876; border-radius: 3px; }
+}
+
+@layer components {
+  .gradient-hero {
+    background: linear-gradient(135deg, #14422f 0%, #1d5c3e 40%, #2d7a52 100%);
+  }
+  .gradient-card {
+    background: linear-gradient(135deg, #14422f, #1d5c3e);
+  }
+  .card-hover {
+    @apply transition-all duration-200;
+  }
+  .card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(20,66,47,0.15);
+  }
+  .radio-opt {
+    @apply w-full text-left px-5 py-3 rounded-xl text-sm font-medium
+      flex items-center justify-between gap-3
+      border-2 border-gray-200 bg-white transition-all cursor-pointer;
+  }
+  .radio-opt:hover  { @apply border-sage bg-cream; }
+  .radio-opt.sel    { @apply border-forest bg-cream; }
+  .multi-chip {
+    @apply border-2 border-green-100 bg-white text-forest
+      text-sm px-4 py-2 rounded-full font-medium transition-all cursor-pointer;
+  }
+  .multi-chip:hover { @apply border-leaf bg-cream; }
+  .multi-chip.sel   { @apply bg-forest text-white border-forest; }
+}
