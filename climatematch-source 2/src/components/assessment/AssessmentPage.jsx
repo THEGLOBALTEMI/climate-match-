@@ -1,0 +1,102 @@
+import { useState }  from 'react'
+import { STEPS }      from '../../data/questions.js'
+import RadioOpt       from './RadioOpt.jsx'
+import MultiChip      from './MultiChip.jsx'
+
+export default function AssessmentPage({ onComplete }) {
+  const [step,    setStep]    = useState(0)
+  const [answers, setAnswers] = useState({})
+  const cur = STEPS[step]
+
+  const canNext = () => {
+    const v = answers[cur.key]
+    if (cur.type === 'text')   return typeof v === 'string' && v.trim().length > 0
+    if (cur.type === 'single') return !!v
+    if (cur.type === 'multi')  return Array.isArray(v) && v.length > 0
+    return false
+  }
+
+  const toggleMulti = opt => {
+    const prev = answers[cur.key] || []
+    setAnswers({ ...answers, [cur.key]: prev.includes(opt) ? prev.filter(x => x !== opt) : [...prev, opt] })
+  }
+
+  const next = () => {
+    if (!canNext()) return
+    if (step < STEPS.length - 1) { setStep(s => s + 1); window.scrollTo({ top: 0 }) }
+    else onComplete(answers)
+  }
+
+  const pct = Math.round((step / STEPS.length) * 100)
+
+  return (
+    <div className="min-h-screen bg-cream pt-20">
+      <div className="bg-white border-b border-gray-100 sticky top-16 z-40 px-4 py-3">
+        <div className="max-w-xl mx-auto">
+          <div className="flex justify-between text-xs text-gray-400 font-medium mb-2">
+            <span>Question {step + 1} of {STEPS.length}</span>
+            <span>{cur.label}</span>
+          </div>
+          <div className="bg-gray-100 rounded-full h-2 overflow-hidden">
+            <div className="bg-gradient-to-r from-forest to-leaf h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-start justify-center px-4 py-12">
+        <div className="w-full max-w-xl">
+          <div className="bg-white rounded-3xl shadow-sm p-6 sm:p-8 border border-gray-50">
+            <h2 className="text-xl sm:text-2xl font-black text-forest mb-1">{cur.question}</h2>
+            {cur.hint && <p className="text-sm text-gray-400 mb-6">{cur.hint}</p>}
+            {!cur.hint && <div className="mb-6" />}
+
+            {cur.type === 'single' && (
+              <div className="flex flex-col gap-2.5">
+                {cur.options.map(opt => (
+                  <RadioOpt key={opt} label={opt} selected={answers[cur.key] === opt} onClick={() => setAnswers({ ...answers, [cur.key]: opt })} />
+                ))}
+              </div>
+            )}
+
+            {cur.type === 'text' && (
+              <input
+                type="text"
+                value={answers[cur.key] || ''}
+                onChange={e => setAnswers({ ...answers, [cur.key]: e.target.value })}
+                onKeyDown={e => e.key === 'Enter' && next()}
+                placeholder={cur.hint}
+                autoFocus
+                className="w-full border-2 border-gray-200 focus:border-leaf rounded-2xl px-5 py-4 text-base outline-none focus:ring-2 focus:ring-leaf/20 transition-all"
+              />
+            )}
+
+            {cur.type === 'multi' && (
+              <div className="flex flex-wrap gap-2">
+                {cur.options.map(opt => (
+                  <MultiChip key={opt} label={opt} selected={(answers[cur.key] || []).includes(opt)} onClick={() => toggleMulti(opt)} />
+                ))}
+              </div>
+            )}
+
+            <div className="flex gap-3 mt-8">
+              {step > 0 && (
+                <button onClick={() => setStep(s => s - 1)} className="px-6 py-3 rounded-full border-2 border-gray-200 text-gray-600 font-semibold text-sm hover:border-gray-300 transition-colors">
+                  ← Back
+                </button>
+              )}
+              <button onClick={next} disabled={!canNext()} className={`flex-1 py-3.5 rounded-full font-bold text-sm transition-all ${canNext() ? 'bg-forest text-white hover:bg-pine shadow-md hover:-translate-y-0.5' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}>
+                {step === STEPS.length - 1 ? 'See My Results 🎯' : 'Next →'}
+              </button>
+            </div>
+          </div>
+
+          <div className="flex justify-center mt-6 gap-1.5">
+            {STEPS.map((_, i) => (
+              <div key={i} className={`h-1.5 rounded-full transition-all ${i === step ? 'w-6 bg-forest' : i < step ? 'w-3 bg-leaf' : 'w-3 bg-gray-200'}`} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

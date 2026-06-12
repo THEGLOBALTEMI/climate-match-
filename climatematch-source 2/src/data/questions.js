@@ -1,0 +1,9 @@
+export const STEPS = [
+  { key: 'status', label: 'Profile', type: 'single', question: 'What best describes you?', options: ['Student', 'Recent graduate', 'Career changer', 'Working professional', 'Entrepreneur', 'Freelancer', 'Other'] },
+  { key: 'background', label: 'Background', type: 'text', question: 'What is your current field or background?', hint: 'Example: communications, finance, engineering, education, fashion...' },
+  { key: 'skills', label: 'Skills', type: 'multi', question: 'What skills do you currently have?', options: ['Writing', 'Research', 'Data analysis', 'Project management', 'Communications', 'Teaching/training', 'Design', 'Finance', 'Policy', 'Engineering', 'Community building', 'Social media', 'Operations', 'Sales', 'Product management', 'Software/tech', 'Monitoring and evaluation'] },
+  { key: 'interests', label: 'Interests', type: 'multi', question: 'What topics interest you most?', options: ['Renewable energy', 'Climate policy', 'Sustainable fashion', 'Circular economy', 'Climate education', 'Green finance', 'Carbon markets', 'ESG', 'Biodiversity', 'Waste management', 'Climate justice', 'Food systems', 'Water', 'Sustainable cities'] },
+  { key: 'workStyle', label: 'Work style', type: 'multi', question: 'What kind of work do you enjoy?', options: ['Working with people', 'Solving technical problems', 'Writing and storytelling', 'Researching', 'Managing projects', 'Building businesses', 'Analysing data', 'Teaching others', 'Designing campaigns', 'Influencing policy'] },
+  { key: 'experience', label: 'Climate experience', type: 'single', question: 'How much climate experience do you currently have?', options: ['None yet', 'Beginner', 'Intermediate', 'Advanced'] },
+  { key: 'goal', label: 'Goal', type: 'single', question: 'What is your biggest goal?', options: ['Find a climate job', 'Transition into climate work', 'Understand where I fit', 'Build climate skills', 'Start a climate business', 'Improve my CV/profile'] },
+]
